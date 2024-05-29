@@ -14,7 +14,7 @@ export class CdkCicdStack extends cdk.Stack {
       pipelineName: "TestPipeline",
       synth: new ShellStep("Synth", {
         input: CodePipelineSource.gitHub("enesbek/cdk-cicd", "dev"),
-        commands: ["cd cdk-cicd", "npm ci", "npx cdk synth"],
+        commands: ["npm ci", "npx cdk synth"],
         primaryOutputDirectory: "cdk-cicd/cdk.out",
       }),
     });
