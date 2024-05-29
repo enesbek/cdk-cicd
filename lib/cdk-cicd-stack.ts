@@ -19,13 +19,11 @@ export class CdkCicdStack extends cdk.Stack {
           "pwd",
           "echo 'Listing contents before cd'",
           "ls -la",
-          "cd cdk-cicd",
-          "echo 'Changed directory to cdk-cicd'",
           "pwd",
           "npm ci",
           "npx cdk synth",
         ],
-        primaryOutputDirectory: "cdk-cicd/cdk.out",
+        primaryOutputDirectory: "./cdk.out",
       }),
     });
   }
