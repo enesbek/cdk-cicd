@@ -1,5 +1,6 @@
 import * as cdk from "aws-cdk-lib";
 import {
+  CodeBuildStep,
   CodePipeline,
   CodePipelineSource,
   ShellStep,
@@ -15,15 +16,7 @@ export class CdkCicdStack extends cdk.Stack {
       pipelineName: "TestPipeline",
       synth: new ShellStep("Synth", {
         input: CodePipelineSource.gitHub("enesbek/cdk-cicd", "dev"),
-        commands: [
-          "echo 'Current directory before cd'",
-          "pwd",
-          "echo 'Listing contents before cd'",
-          "ls -la",
-          "pwd",
-          "npm ci",
-          "npx cdk synth",
-        ],
+        commands: ["npm ci", "npx cdk synth"],
         primaryOutputDirectory: "./cdk.out",
       }),
     });
@@ -31,6 +24,12 @@ export class CdkCicdStack extends cdk.Stack {
     const testStage = pipeline.addStage(
       new PipelineStage(this, "PipelineTestStage", {
         stageName: "test",
+      })
+    );
+
+    testStage.addPre(
+      new CodeBuildStep("unit-tests", {
+        commands: ["npm ci", "npm test"],
       })
     );
   }
